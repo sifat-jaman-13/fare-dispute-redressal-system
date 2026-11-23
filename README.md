@@ -466,7 +466,7 @@ fare-dispute-redressal-system/
 
 ## 📜 Academic Integrity
 
-This project was developed by Team 06 for **CSE311L: Database Systems Lab** at **North South University**. It is intended for academic evaluation, demonstration, and educational use.
+This project was developed by Team 06 for **CSE311L: Database Systems Lab** at **North South University**. It is intended for academic evaluation, demonstration, and educational use. Students are encouraged to use it as a learning reference, take inspiration from its approach, and build a similar or improved system with their own design, implementation, and ideas rather than copying the project wholesale.
 
 
 ## Licence
