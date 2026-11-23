@@ -467,3 +467,8 @@ fare-dispute-redressal-system/
 ## 📜 Academic Integrity
 
 This project was developed by Team 06 for **CSE311L: Database Systems Lab** at **North South University**. It is intended for academic evaluation, demonstration, and educational use.
+
+
+## Licence
+
+This project is available under a [proprietary non-commercial use licence](LICENSE). Individual personal and educational use is permitted; company, organisational, and commercial use requires prior written permission. For this team project, commercial licensing or other commercial dealings require prior written approval from every co-author and copyright holder.
