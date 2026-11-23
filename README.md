@@ -1,284 +1,279 @@
+<div align="center">
+
 # 🚌 Public Transport Fare Dispute Redressal System
 
-[![Database](https://img.shields.io/badge/Database-MySQL%208.0.16%2B%20%7C%20MariaDB%2010.4%2B-blue.svg)](https://www.mysql.com/)
-[![Environment](https://img.shields.io/badge/Environment-XAMPP-orange.svg)](https://www.apachefriends.org/)
-[![Course](https://img.shields.io/badge/Course-CSE311L%20Database%20Systems%20Lab-red.svg)](https://ece.northsouth.edu/courses/cse-311/)
-[![Section](https://img.shields.io/badge/Section-03%20%7C%20Team%2006-green.svg)]()
-[![Status](https://img.shields.io/badge/Status-Schema%20%26%20Demo%20Data%20Included-success.svg)]()
+### A relational database for fare transparency, passenger complaints, and transport analytics.
 
-A relational database system for approved public-transport fare lookup, passenger overcharge complaints, complaint tracking, administrator review, and transport data analytics.
+A CSE311L database project that models approved route fares, passenger overcharge complaints, administrator reviews, and audit-friendly reporting.
 
----
+[![MySQL](https://img.shields.io/badge/MySQL-8.0.16%2B-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![MariaDB](https://img.shields.io/badge/MariaDB-10.4%2B-003545?logo=mariadb&logoColor=white)](https://mariadb.org/)
+[![SQL](https://img.shields.io/badge/Language-SQL-336791?logo=databricks&logoColor=white)](https://en.wikipedia.org/wiki/SQL)
+[![Course](https://img.shields.io/badge/Course-CSE311L-red)](https://ece.northsouth.edu/courses/cse-311/)
+[![License](https://img.shields.io/badge/License-Proprietary%20Non--Commercial-orange)](LICENSE)
 
-## 📄 Project Documentation
+[**ERD & Schema PDF**](docs/CSE311L_Team06_ERD_Schema_Design.pdf) · [SQL Script](fare_dispute_redressal.sql) · [Repository](https://github.com/sifat-jaman-13/fare-dispute-redressal-system)
 
-The following document contains the project's official approved Entity Relationship Diagram (ERD) and relational schema design:
-
-- 📑 **[ERD & Schema Design (PDF)](docs/CSE311L_Team06_ERD_Schema_Design.pdf)**
-
-It presents the comprehensive database design, including entities, attributes, relationships, cardinalities, primary keys, foreign keys, and the normalized logical relational schema.
+</div>
 
 ---
 
-## 🏛️ Academic Information
+## ✦ Project overview
 
-- **Institution:** North South University (NSU)
-- **Department:** Electrical & Computer Engineering (ECE)
-- **Course:** CSE311L — Database Systems Lab
-- **Section:** 03 | **Team:** Team 06
-- **Faculty:** Ms. Tanzilah Noor Shabnam `[TnS1]`
-- **Lab Instructor:** Md. Amanullah Shah
+The **Public Transport Fare Dispute Redressal System** is a relational database designed to support approved public-transport fare lookup, passenger overcharge complaints, administrator review, and transport data analytics.
 
----
+It models:
 
-## 👥 Team Members and Roles
+- Passengers and administrators
+- Bus operators and individual buses
+- Routes and their ordered stops
+- Approved fares with effective date ranges
+- Passenger complaints and optional evidence-file references
+- Administrator decisions and complaint review history
+- Views for fare lookup, complaint details, and transport analytics
 
-| Student Name | Student ID | Designated Project Role |
-|---|---|---|
-| **Md Sifat Jaman** | `223292****` | **Project Coordinator & Database Designer** — ERD, logical schema, documentation, and coordination. |
-| **Sabbir Ahmed** | `221248****` | **Database Designer & Frontend Developer** — schema modeling, DDL implementation, and interface planning. |
-| **Progna Thakur** | `241134****` | **Database Engineer & Backend Developer** — referential integrity, triggers, views, and backend connection. |
-| **Tausif Taher** | `241143****` | **Database Administrator & System Tester** — test data, edge-case validation, and integrity testing. |
+> **Scope:** This repository contains the SQL database implementation, sample data, verification queries, and ERD/schema documentation. It does **not** include a finished web frontend, mobile app, REST API, authentication service, or photo-upload implementation.
 
-> *Note: Student ID digits are masked for privacy on public GitHub repositories.*
+## ✦ What the database can do
 
----
+| Capability | Implementation |
+|---|---|
+| User roles | Passenger and Admin roles stored in `USER` |
+| Route modelling | `ROUTE`, `STOP`, and ordered `ROUTE_STOP` relationships |
+| Fare management | Approved fares with effective start and end dates |
+| Complaint filing | Passenger complaints linked to a bus and fare |
+| Tracking | Automatically generated `FD-YYMMDD-XXXXXX` tracking number |
+| Review history | Separate records for administrator decisions |
+| Status updates | Complaint status is synchronized when a review is inserted |
+| Reporting | Four views for complaint details, current fares, operator statistics, and route statistics |
+| Integrity | Foreign keys, unique constraints, CHECK constraints, and triggers |
 
-## 💡 Project Overview
-
-The **Public Transport Fare Dispute Redressal System** stores route information, bus stops, bus operators, buses, approved fares, passenger complaints, evidence photos, and administrator review decisions.
-
-The database supports the following workflow:
-
-1. An administrator adds routes, stops, operators, buses, and approved fare records.
-2. A passenger checks the approved fare for a route segment.
-3. The passenger files a complaint when the amount paid is higher than the approved fare.
-4. The database generates a unique tracking number.
-5. An administrator reviews the complaint and records a decision.
-6. The complaint status is automatically synchronized with the latest review.
-7. Reports show disputed operators, routes, fare differences, and audit history.
-
-### 🔄 System Workflow
+### Example workflow
 
 ```text
-[Admin Configures Data] → [Passenger Checks Fare] → [Passenger Files Complaint]
-                                                        ↓
-[Analytics and Reports] ← [Status Synchronized] ← [Admin Reviews Complaint]
-                                  ↑
-                    [UUID-Derived Tracking Number]
+Admin configures routes, stops, buses and approved fares
+                         |
+                         v
+              Passenger checks a fare
+                         |
+                         v
+              Passenger files a complaint
+                         |
+                         v
+              Database generates tracking ID
+                         |
+                         v
+              Admin records a review decision
+                         |
+                         v
+              Complaint status is updated
+                         |
+                         v
+             Views provide reports and analytics
 ```
 
-The database handles validation and status transitions through foreign keys, constraints, and triggers.
+## ✦ Database design
 
----
+The SQL script creates **10 tables, 4 views, 6 explicitly declared secondary indexes, and 7 triggers**.
 
-## ✨ Core System Capabilities
+### Entity relationship diagram
 
-### 👤 Role-Based User Management
+The project's approved ERD and relational schema documentation is available here:
 
-The `USER` table supports two roles:
+📄 **[Open ERD & Schema Design (PDF)](docs/CSE311L_Team06_ERD_Schema_Design.pdf)**
 
-- **Passenger:** Files complaints and is associated with complaint records.
-- **Admin:** Manages fares and records complaint reviews.
+### Tables
 
-Triggers verify that only users with the `Admin` role can manage fares and reviews, and only users with the `Passenger` role can file complaints.
+| Table | Purpose |
+|---|---|
+| `USER` | Passenger and administrator accounts/role records |
+| `BUS_OPERATOR` | Bus operators and licence details |
+| `BUS` | Individual buses assigned to operators |
+| `ROUTE` | Public transport routes |
+| `STOP` | Reusable bus stops |
+| `ROUTE_STOP` | Many-to-many route/stop mapping and stop sequence |
+| `FARE` | Approved fare between two stops on a route |
+| `COMPLAINT` | Passenger fare dispute reports |
+| `COMPLAINT_PHOTO` | References to optional evidence file paths |
+| `COMPLAINT_REVIEW` | Administrator decisions and review history |
 
-### 🛣️ Route and Stop Management
+### Views
 
-The system models routes and reusable stops. The `ROUTE_STOP` junction table resolves the many-to-many relationship between routes and stops and records the sequence of each stop using `stop_order`.
+| View | Purpose |
+|---|---|
+| `v_complaint_details` | Complaint information with calculated fare difference |
+| `v_operator_complaints` | Complaint totals and positive overcharge totals by operator |
+| `v_route_disputes` | Complaint totals and average positive overcharge by route |
+| `v_current_fares` | Fare records active on the current database date |
 
-### 💰 Temporal Fare Management
+### Triggers and business rules
 
-The `FARE` table stores approved fare amounts between two stops on a route. Each fare has an effective date range:
+The database uses triggers to enforce rules that go beyond basic foreign keys:
 
-- `effective_from`: date the fare becomes valid
-- `effective_to`: date the fare expires
-- `NULL effective_to`: fare is currently open-ended
-
-Historical fare records remain protected by foreign-key restrictions.
-
-### 📝 Complaint Filing and Tracking
-
-Passengers can report a fare dispute using the bus, fare, journey date/time, amount paid, and description. Optional evidence can be stored in `COMPLAINT_PHOTO`.
-
-A trigger generates a UUID-derived tracking number in this format:
-
-`FD-YYMMDD-XXXXXX`
-
-The tracking number is protected by a unique constraint.
-
-### 📋 Review History
-
-`COMPLAINT_REVIEW` stores every administrator decision instead of overwriting previous decisions. Supported decisions are:
-
-- Under Review
-- Resolved
-- Rejected
-
-A trigger automatically updates the parent complaint's current status when a new review record is inserted.
-
-### 📊 Analytics
-
-The database includes views for:
-
-- Complaint details and calculated fare differences
-- Complaint totals and positive overcharge totals by operator
-- Complaint totals and average overcharge by route
-- Currently active fare records
-- Complaint review audit history
-
-The analytics views use `GREATEST(amount_paid - approved_fare, 0)`, so complaints with no overcharge do not reduce the total positive overcharge.
-
----
-
-## 🗄️ Database Architecture
-
-The database contains **10 tables**, **4 views**, indexes, and triggers.
-
-```text
-BUS_OPERATOR  1 ──── N  BUS  1 ──── N  COMPLAINT
-                                       │
-ROUTE         1 ──── N  FARE  1 ──── N ├── COMPLAINT_PHOTO
-   │              │                     │
-   │              └────────────────────┘
-   │
-   └──── N  ROUTE_STOP  N ──── 1  STOP
-
-USER (Passenger) 1 ──── N COMPLAINT
-USER (Admin)     1 ──── N FARE
-USER (Admin)     1 ──── N COMPLAINT_REVIEW
-COMPLAINT        1 ──── N COMPLAINT_REVIEW
-```
-
-### 📚 Table Breakdown
-
-| Table | Primary Key | Foreign Keys & Relationships | Key Constraints & Rules | Purpose |
-|---|---|---|---|---|
-| `USER` | `user_id` | *None* | `email` (UNIQUE), `role` (`Passenger`, `Admin`) | Stores passengers and administrators. |
-| `BUS_OPERATOR` | `operator_id` | *None* | `license_no` (UNIQUE), `status` (`Active`, `Suspended`) | Stores transport operators and license information. |
-| `BUS` | `bus_id` | `operator_id` $\rightarrow$ `BUS_OPERATOR` | `bus_number` (UNIQUE), `ON DELETE RESTRICT` | Stores individual buses and their operators. |
-| `ROUTE` | `route_id` | *None* | `route_name` (UNIQUE) | Stores route names, origins, and destinations. |
-| `STOP` | `stop_id` | *None* | `stop_name` (NOT NULL) | Stores reusable bus stops. |
-| `ROUTE_STOP` | `route_id, stop_id` | `route_id` $\rightarrow$ `ROUTE`<br>`stop_id` $\rightarrow$ `STOP` | Composite PK, `UNIQUE(route_id, stop_order)`, `CHECK(stop_order > 0)`, `ON DELETE CASCADE` on route; `ON DELETE RESTRICT` on stop | Resolves route-stop M:N mapping and stores stop order. |
-| `FARE` | `fare_id` | `route_id` $\rightarrow$ `ROUTE`<br>`from_stop_id`, `to_stop_id` $\rightarrow$ `STOP`<br>`managed_by` $\rightarrow$ `USER` | `approved_fare >= 0`, `UNIQUE(route, from, to, date)`, `effective_to >= effective_from`, `RESTRICT` on delete | Stores approved fares and validity dates. |
-| `COMPLAINT` | `complaint_id` | `passenger_id` $\rightarrow$ `USER`<br>`bus_id` $\rightarrow$ `BUS`<br>`fare_id` $\rightarrow$ `FARE` | `tracking_number` (UNIQUE, DEFAULT ''), `amount_paid > 0`, default status `Pending`, `RESTRICT` on delete | Stores passenger fare dispute reports. |
-| `COMPLAINT_PHOTO` | `photo_id` | `complaint_id` $\rightarrow$ `COMPLAINT` | `ON DELETE CASCADE` (dependent evidence files) | Stores optional evidence file paths. |
-| `COMPLAINT_REVIEW` | `review_id` | `complaint_id` $\rightarrow$ `COMPLAINT`<br>`admin_id` $\rightarrow$ `USER` | `decision` (`Under Review`, `Resolved`, `Rejected`), `ON DELETE CASCADE` on complaint, `RESTRICT` on admin | Stores administrator decisions and remarks. |
-
----
-
-## 🔐 Constraints, Triggers, and Referential Integrity
-
-The database enforces:
-
-- Unique email addresses, operator license numbers, bus numbers, route names, and complaint tracking numbers.
-- `approved_fare >= 0`.
-- `amount_paid > 0`.
-- `stop_order > 0`.
-- Fare validity dates where `effective_to` cannot be earlier than `effective_from`.
-- Different boarding and destination stops.
+- Only an Admin user can create or update fare records.
+- Only a Passenger user can create or update a complaint.
+- Only an Admin user can create or update a complaint review.
+- Boarding and destination stops must be different.
 - Both fare stops must belong to the selected route.
-- Complaint journey dates must fall within the linked fare's validity period.
-- Only Admin users can manage fares or create reviews.
-- Only Passenger users can file complaints.
-- Complaint status synchronization after review insertion.
-- `ON DELETE RESTRICT` for historical fare, bus, complaint, and user relationships.
-- `ON DELETE CASCADE` for route-stop, complaint-photo, and complaint-review dependent records.
-- `ON UPDATE CASCADE` for foreign-key relationships.
+- A complaint's journey date must fall within the linked fare's effective period.
+- A tracking number is generated when a complaint is inserted without one.
+- A new review record updates the linked complaint's current status.
 
-The fare difference is derived dynamically:
+**Review-history detail:** Every review insertion is retained as a separate row. The status-sync trigger runs after review insertion; editing an existing review row does not run that status-sync trigger.
+
+### Fare calculations
+
+The complaint-details view calculates:
 
 `fare_difference = amount_paid - approved_fare`
 
-It is calculated in `v_complaint_details` instead of being stored redundantly.
+The operator and route analytics views use `GREATEST(amount_paid - approved_fare, 0)` so a complaint with no overcharge does not reduce aggregate positive-overcharge figures. The detailed complaint view can still show a negative fare difference.
 
-### 🧮 MySQL Compatibility
+### Important database limitations
 
-The rule that boarding and destination stops must differ is enforced by `trg_fare_bi` and `trg_fare_bu`. It is implemented with triggers because MySQL rejects a table-level CHECK constraint that references foreign-key columns with cascading actions (Error 3823).
+- The schema does not prevent overlapping effective date ranges for otherwise matching fare records.
+- The current-fare view filters by today's database date; it does not choose between overlapping active records.
+- `COMPLAINT_PHOTO.file_path` stores a path/reference only. The repository does not upload, store, or serve image files.
+- The sample `password_hash` values are dummy placeholders. There is no login or password-verification implementation in this repository.
+- Role checks are database triggers, not a substitute for application-level authentication and authorization.
 
-The script contains **10 tables, 4 views, 6 indexes, and 7 triggers**.
+## ✦ Requirements
 
----
+Choose **one** supported database environment:
 
-## 🖥️ Requirements
+| Requirement | Version / notes |
+|---|---|
+| MySQL Server | **8.0.16 or newer** |
+| MariaDB Server | **10.4 or newer** |
+| phpMyAdmin | Optional graphical interface for importing and querying SQL |
+| MySQL/MariaDB command-line client | Optional; needed for terminal-based import and queries |
+| XAMPP | Optional package that provides a local database environment and phpMyAdmin |
 
-- XAMPP
-- MySQL 8.0.16+ or MariaDB 10.4+
-- phpMyAdmin
-- A web browser
-- Apache is required only if a PHP website is also being used
+The project has no Node.js, Python, Java, PHP, Composer, or npm package dependencies. You do not need to install a programming-language runtime to run the SQL database script.
 
----
+**Why MySQL 8.0.16?** The script relies on enforced CHECK constraints, which are enforced by MySQL starting with 8.0.16.
 
-## 🚀 XAMPP Installation
+## ✦ Installation
 
-### Step 1: Install XAMPP
+### Option A — XAMPP (Windows)
 
-1. Download XAMPP from [apachefriends.org](https://www.apachefriends.org/download.html).
+This is the easiest route if you want a local database server and a graphical SQL interface.
+
+#### 1. Install XAMPP
+
+1. Download XAMPP from [Apache Friends](https://www.apachefriends.org/download.html).
 2. Run the installer.
-3. Install at least **Apache**, **MySQL**, and **phpMyAdmin**.
-4. The default installation directory is recommended: `C:\xampp`.
+3. Install the MySQL/MariaDB database component and phpMyAdmin.
+4. Finish the installation. The default location is usually `C:\xampp`.
 
-### Step 2: Start the Services
+XAMPP bundles MariaDB rather than Oracle MySQL. Check the bundled MariaDB version and make sure it is **10.4 or newer**.
 
-1. Open the **XAMPP Control Panel**.
+#### 2. Start the database
+
+1. Open **XAMPP Control Panel**.
 2. Start **MySQL**.
-3. Start **Apache** if the project includes a PHP frontend.
-4. Open phpMyAdmin at [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
+3. Open [http://localhost/phpmyadmin](http://localhost/phpmyadmin) in your browser.
 
-### Port Troubleshooting
+Apache is only needed to serve phpMyAdmin through the XAMPP web interface. It is not a dependency of the SQL database itself.
 
-If MySQL cannot start because port 3306 is already in use:
+### Option B — Install MySQL or MariaDB directly
 
-1. Open **Config → my.ini** in the XAMPP Control Panel.
-2. Change the MySQL port from `3306` to `3307`.
-3. Use port `3307` in application connection settings and MySQL commands.
+If you do not want XAMPP, install one database server:
 
----
+- [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
+- [MariaDB Server](https://mariadb.org/download/)
 
-## 📥 Import the Database
+During installation, configure a database administrator account and remember its password. Install the command-line client if the installer offers it as a separate component.
 
-### Method 1: phpMyAdmin
+Verify that the server is available:
 
-1. Open [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
-2. Click the **Import** tab.
-3. Click **Choose File**.
-4. Select `fare_dispute_redressal.sql`.
-5. Keep the format as **SQL**.
+```bash
+mysql --version
+```
+
+If your system uses the MariaDB client, the command may also be available as:
+
+```bash
+mariadb --version
+```
+
+> You only need one database engine. Do not install MySQL and MariaDB side by side unless you know how to configure separate ports and services.
+
+## ✦ Get the project
+
+Clone the repository:
+
+```bash
+git clone https://github.com/sifat-jaman-13/fare-dispute-redressal-system.git
+cd fare-dispute-redressal-system
+```
+
+Or download the repository as a ZIP from GitHub and extract it.
+
+The SQL file you need is:
+
+```text
+fare_dispute_redressal.sql
+```
+
+## ✦ Import the database
+
+<badge color="warning">Destructive import</badge>
+
+**Back up any existing database named `fare_dispute_db` before importing.** The SQL script starts with `DROP DATABASE IF EXISTS fare_dispute_db`; importing it deletes and recreates that database, including its existing data.
+
+### Method 1 — phpMyAdmin
+
+1. Start the database service.
+2. Open [http://localhost/phpmyadmin](http://localhost/phpmyadmin), or open phpMyAdmin through your own hosting environment.
+3. Select the **Import** tab.
+4. Choose `fare_dispute_redressal.sql`.
+5. Keep the format set to **SQL**.
 6. Click **Import** or **Go**.
-7. Select `fare_dispute_db` from the left sidebar.
+7. Wait for the success message.
+8. Select `fare_dispute_db` in the left sidebar.
 
-The SQL script creates the database, tables, relationships, indexes, triggers, views, sample data, and test queries.
+The script creates the database, tables, constraints, indexes, triggers, views, sample records, and commented demo queries.
 
-> ⚠️ **Important:** The script begins with `DROP DATABASE IF EXISTS fare_dispute_db`. Importing it deletes and recreates that database. Back up existing data before importing.
+### Method 2 — MySQL / MariaDB command line
 
-### Method 2: MySQL Command Line
+Run the command from the directory containing `fare_dispute_redressal.sql`.
 
-From the folder containing the SQL file:
+**MySQL or MariaDB client:**
 
 ```bash
 mysql -u root -p < fare_dispute_redressal.sql
 ```
 
-For a default Windows XAMPP installation, run the following commands in Windows Command Prompt (CMD) from the folder containing the SQL file:
+Or:
 
-**Default MySQL port (3306):**
+```bash
+mariadb -u root -p < fare_dispute_redressal.sql
+```
+
+Enter the database administrator password when prompted.
+
+**Windows with the default XAMPP installation:**
+
+Open Command Prompt in the project directory.
+
+Default port `3306`:
+
 ```cmd
 "C:\xampp\mysql\bin\mysql.exe" -u root -p < fare_dispute_redressal.sql
 ```
 
-**If MySQL is configured on port 3307:**
+If you configured MySQL/MariaDB to use port `3307`:
+
 ```cmd
 "C:\xampp\mysql\bin\mysql.exe" -P 3307 -u root -p < fare_dispute_redressal.sql
 ```
 
-If the default XAMPP root account has no password, press **Enter** when prompted.
+If your local XAMPP root account has no password, press **Enter** when prompted. Do not leave a production database administrator account without a password.
 
----
+## ✦ Verify the installation
 
-## ✅ Verify the Import
-
-Run the following in phpMyAdmin's **SQL** tab:
+Open the SQL tab in phpMyAdmin or connect with your database client, then run:
 
 ```sql
 USE fare_dispute_db;
@@ -305,26 +300,13 @@ SELECT tracking_number,
 FROM v_complaint_details;
 ```
 
-Expected sample data includes:
+The sample dataset should contain:
 
-- 10 tables
-- 4 views
-- 4 complaints
-- 5 current fares
-- 3 bus operators
-- 4 buses
-- 2 routes
-- 7 stops
-- 2 Admin users
-- 3 Passenger users
-
-### 📋 Expected Object Counts
-
-| Object | Expected Count |
+| Object / record | Expected count |
 |---|---:|
 | Base tables | 10 |
 | Views | 4 |
-| Indexes created by the script | 6 |
+| Explicit secondary indexes | 6 |
 | Triggers | 7 |
 | Users | 5 |
 | Bus operators | 3 |
@@ -332,16 +314,16 @@ Expected sample data includes:
 | Routes | 2 |
 | Stops | 7 |
 | Route-stop rows | 10 |
-| Fares | 5 |
+| Fare records | 5 |
 | Complaints | 4 |
-| Complaint photos | 3 |
+| Complaint photo references | 3 |
 | Complaint reviews | 3 |
 
----
+## ✦ Demo queries
 
-## 🔍 Verification Queries and Demo Walkthrough
+Try these queries after importing the sample data.
 
-### 1. Complaint Tracking and Fare Difference
+### 1. Complaint tracking and fare difference
 
 ```sql
 SELECT tracking_number,
@@ -355,9 +337,7 @@ SELECT tracking_number,
 FROM v_complaint_details;
 ```
 
-The tracking value is generated from a UUID substring and follows the custom format `FD-YYMMDD-XXXXXX`; it is not a full UUID.
-
-### 2. Operator Complaint Analytics
+### 2. Operator complaint analytics
 
 ```sql
 SELECT operator_name,
@@ -368,7 +348,7 @@ FROM v_operator_complaints
 ORDER BY total_complaints DESC, total_overcharge DESC;
 ```
 
-### 3. Route Dispute Analytics
+### 3. Route dispute analytics
 
 ```sql
 SELECT route_name,
@@ -378,7 +358,7 @@ FROM v_route_disputes
 ORDER BY total_complaints DESC, avg_overcharge DESC;
 ```
 
-### 4. Current Fare Lookup
+### 4. Current fare lookup
 
 ```sql
 SELECT *
@@ -386,7 +366,7 @@ FROM v_current_fares
 WHERE route_name = 'Mirpur-10 to Motijheel';
 ```
 
-### 5. Complaint Review Audit Trail
+### 5. Complaint review audit trail
 
 ```sql
 SELECT c.tracking_number,
@@ -400,75 +380,115 @@ JOIN `USER` u ON u.user_id = cr.admin_id
 ORDER BY cr.reviewed_at ASC;
 ```
 
----
+## ✦ Test the business constraints
 
-## 🛡️ Constraint Testing
+The following statements are expected to fail because they violate trigger-enforced rules. Run them **one at a time** after importing the database.
 
-Run these statements individually after importing the database. They are expected to fail and demonstrate the trigger rules.
+### Passenger attempting to review a complaint
 
 ```sql
-USE fare_dispute_db;
-
--- 1. Passenger attempting to create a review (Requires Admin role)
 INSERT INTO COMPLAINT_REVIEW
     (complaint_id, admin_id, decision, remarks)
 VALUES
     (1, 3, 'Resolved', 'Unauthorized passenger review');
--- Expected: ERROR 1644 (45000): COMPLAINT_REVIEW.admin_id must reference a user with role Admin
+```
 
--- 2. Boarding and destination stops are identical
+Expected: the database rejects the insert because user 3 is a Passenger, not an Admin.
+
+### Boarding stop and destination stop are identical
+
+```sql
 INSERT INTO FARE
     (route_id, from_stop_id, to_stop_id, approved_fare, effective_from, managed_by)
 VALUES
     (1, 1, 1, 15.00, '2026-01-01', 1);
--- Expected: ERROR 1644 (45000): Boarding stop and destination stop must be different
+```
 
--- 3. Journey date is outside the fare validity period
+Expected: the database rejects the fare because both stops are identical.
+
+### Journey date is outside the fare validity period
+
+```sql
 INSERT INTO COMPLAINT
     (passenger_id, bus_id, fare_id, journey_date, amount_paid, description)
 VALUES
     (3, 1, 1, '2025-06-15', 50.00, 'Backdated journey complaint');
--- Expected: ERROR 1644 (45000): Journey date is outside the effective period of the linked fare
 ```
 
-Do not re-import the entire SQL file to test one statement because the script recreates the database.
+Expected: the database rejects the complaint because the journey date is earlier than the linked fare's effective date.
 
----
+> These statements are negative tests. They should not create records. Do not re-import the full SQL script just to run a test; the import script drops and recreates the database.
 
-## 📦 Sample Data
-
-The SQL script includes:
-
-- 2 Admin users and 3 Passenger users
-- 3 bus operators and 4 buses
-- 2 routes and 7 stops
-- Route-stop sequences
-- 5 current fare records
-- 4 complaints
-- Complaint photo paths
-- Administrator review history
-
-The sample `password_hash` values are placeholders for demonstration and are not production login passwords.
-
----
-
-## 📂 Repository Files
+## ✦ Repository structure
 
 ```text
 fare-dispute-redressal-system/
-├── README.md
+├── docs/
+│   └── CSE311L_Team06_ERD_Schema_Design.pdf
 ├── fare_dispute_redressal.sql
-└── docs/
-    └── CSE311L_Team06_ERD_Schema_Design.pdf
+├── LICENSE
+└── README.md
 ```
+
+## ✦ Troubleshooting
+
+| Problem | What to do |
+|---|---|
+| MySQL/MariaDB service will not start | Check whether another database service is already using the configured port. Stop the conflicting service or configure a different port consistently. |
+| Port 3306 is already in use | Check the active MySQL/MariaDB service before changing XAMPP's port. If you change it to 3307, use that port for both the server and client connection. |
+| `mysql` is not recognized | Add the MySQL/MariaDB `bin` directory to PATH, reopen the terminal, or use the full executable path shown in the XAMPP instructions. |
+| Access denied for user | Check the username, password, host, and port. Use the credentials configured when installing the database server. |
+| phpMyAdmin cannot connect | Confirm the database service is running and phpMyAdmin is configured for the same host and port. |
+| CHECK constraints are not enforced | Confirm you are using MySQL 8.0.16+ or MariaDB 10.4+. Older MySQL versions may parse CHECK syntax without enforcing it. |
+| Import stops at a trigger or delimiter statement | Use the full SQL script in phpMyAdmin's Import tab or the MySQL/MariaDB command-line client. Do not execute the script as isolated statements in an interface that does not support delimiter changes. |
+| Database already contains old data | Back it up first. The script drops and recreates `fare_dispute_db`. |
+
+## ✦ Academic information
+
+| Detail | Information |
+|---|---|
+| Institution | North South University (NSU) |
+| Department | Electrical & Computer Engineering (ECE) |
+| Course | CSE311L — Database Systems Lab |
+| Section | 03 |
+| Team | Team 06 |
+| Faculty | Ms. Tanzilah Noor Shabnam (`TnS1`) |
+| Lab Instructor | Md. Amanullah Shah |
+
+### Team members
+
+| Student | Project responsibility |
+|---|---|
+| **Md Sifat Jaman** | Project Coordinator & Database Designer — ERD, logical schema, documentation, and coordination |
+| **Sabbir Ahmed** | Database Designer & Frontend Developer — schema modelling, DDL implementation, and interface planning |
+| **Progna Thakur** | Database Engineer & Backend Developer — referential integrity, triggers, views, and backend connection |
+| **Tausif Taher** | Database Administrator & System Tester — test data, edge-case validation, and integrity testing |
+
+Student ID digits are masked in this public repository for privacy.
+
+## ✦ Learning and academic integrity
+
+This project was developed as a university database lab project. Students are encouraged to study its ERD, relational schema, constraints, triggers, and reporting queries as a learning reference.
+
+Use the ideas as inspiration to design a similar or improved system with your own requirements, schema decisions, implementation, and documentation. Experiment with additional features, improve the business rules, and explain your design choices. Do not copy the project wholesale and submit it as your own coursework.
+
+## ✦ Licence
+
+This project is distributed under a [proprietary non-commercial use licence](LICENSE).
+
+- **Permitted:** Individual personal and educational use under the licence terms, with attribution.
+- **Not permitted without prior written permission:** Company, organisational, business, or other commercial use.
+- **Team project:** Commercial licensing or other commercial dealings require prior written approval from every co-author and copyright holder whose rights are affected.
+- **Third-party materials:** Remain subject to their own licences and notices.
+
+The licence does not grant permission to publicly redistribute the project. See [LICENSE](LICENSE) for the complete terms.
 
 ---
 
-## 📜 Academic Integrity
+<div align="center">
 
-This project was developed by Team 06 for **CSE311L: Database Systems Lab** at **North South University**. It is intended for academic evaluation, demonstration, and educational use. Students are encouraged to use it as a learning reference, take inspiration from its approach, and build a similar or improved system with their own design, implementation, and ideas rather than copying the project wholesale.
+**Designed for transparent fares. Built for accountable transport systems.**
 
+[Repository](https://github.com/sifat-jaman-13/fare-dispute-redressal-system) · [ERD & Schema PDF](docs/CSE311L_Team06_ERD_Schema_Design.pdf)
 
-## Licence
-
-This project is available under a [proprietary non-commercial use licence](LICENSE). Individual personal and educational use is permitted; company, organisational, and commercial use requires prior written permission. For this team project, commercial licensing or other commercial dealings require prior written approval from every co-author and copyright holder.
+</div>
